@@ -5,19 +5,29 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.activation.DataHandler;
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import net.shazam.rnd.cxfrest.JsonBean;
 
+
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+
+/*
+ * references: 
+ * https://github.com/kittugit/java
+ * http://stackoverflow.com/questions/16433315/can-i-use-rolesallowed-on-restful-resources-implemented-on-apache-cxf
+ */
 
 @Path("/hello")
 public class HelloWorld {
@@ -25,6 +35,7 @@ public class HelloWorld {
     @GET
     @Path("/echo/{input}")
     @Produces("text/plain")
+    @RolesAllowed("hello-role1")
     public String ping(@PathParam("input") String input) {
         return input;
     }
@@ -75,7 +86,16 @@ public class HelloWorld {
             
     }
     
-    
+    @GET
+    @Produces("text/plain")
+    @Path("/cliche")
+    public Response getClichedMessage(@Context HttpServletRequest request) {
+            return Response.
+                    ok().
+                    entity("Sending \"Hello World\" to user \"" + request.getUserPrincipal().getName() + "\"").
+                    build();
+
+    }
     private String getFileName(MultivaluedMap<String, String> header) {
         String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
         for (String filename : contentDisposition) {

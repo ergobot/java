@@ -22,4 +22,33 @@
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- For security -->
+    <!-- Your users and user roles are located in tomcat-users.xml -->
+    <!-- When you run this, you will need to find where your configuration is at -->
+    <!-- Example locations are:  
+    	The place you unpacked tomcat
+    	your-Workspace-dir/ProjectName/target
+    	An example "tomcat-users.xml" file for this example is located in src/main/java
+    -->
+    
+    <!--
+ * references: 
+ * https://github.com/kittugit/java
+ * http://stackoverflow.com/questions/16433315/can-i-use-rolesallowed-on-restful-resources-implemented-on-apache-cxf -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Hello Services</web-resource-name>
+            <url-pattern>/hello/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>hello-user</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>default</realm-name>
+    </login-config>
+    
 </web-app>

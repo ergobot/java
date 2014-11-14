@@ -23,4 +23,9 @@
   <user username="both" password="tomcat" roles="tomcat,role1"/>
   <user username="role1" password="tomcat" roles="role1"/>
 -->
+<role rolename="hello-user" />
+<role rolename="hello-role1"/>
+<role rolename="hello-role2" />
+<user username="hello1" password="Password1" roles="hello-role1,hello-user"/>
+<user username="hello2" password="Password1" roles="hello-role2,hello-user"/>
 </tomcat-users>

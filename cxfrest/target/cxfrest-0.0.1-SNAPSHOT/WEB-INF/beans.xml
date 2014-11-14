@@ -5,12 +5,27 @@
     <context:annotation-config/>
     <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
+    
+    <bean class="net.shazam.rnd.cxfrest.HelloWorld" id="helloWorldService" />
+    
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
-            <bean class="net.shazam.rnd.cxfrest.HelloWorld"/>
+            <ref bean="helloWorldService" />
         </jaxrs:serviceBeans>
         <jaxrs:providers>
             <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
         </jaxrs:providers>
     </jaxrs:server>
+    
+    <bean id="authorizationInterceptor"
+		class="org.apache.cxf.interceptor.security.SecureAnnotationsInterceptor">
+		<property name="securedObject" ref="helloWorldService" />
+	</bean>
+    
+    
+    <!--
+ * references: 
+ * https://github.com/kittugit/java
+ * http://stackoverflow.com/questions/16433315/can-i-use-rolesallowed-on-restful-resources-implemented-on-apache-cxf -->
+ 
 </beans>
